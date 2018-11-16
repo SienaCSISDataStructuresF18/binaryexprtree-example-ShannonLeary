@@ -1,11 +1,11 @@
 /**
-   A simple binary expression tree implementation.
-   <BR> 
-   Each node in the tree holds a String that is either a binary operator
-   (restricted to "+", "-", "*", "/") or can be treated as an integer value.
-   
-   @author Jim Teresco
-*/
+A simple binary expression tree implementation.
+<BR> 
+Each node in the tree holds a String that is either a binary operator
+(restricted to "+", "-", "*", "/") or can be treated as an integer value.
+
+@author Jim Teresco
+ */
 public class BinaryExprTree {
 
     /** some constants to define the operators */
@@ -14,60 +14,88 @@ public class BinaryExprTree {
     public static final String TIMES = "*";
     public static final String DIVIDE = "/";
 
+    private Object value;
+    private BinaryExprTree left;
+    private BinaryExprTree right;
     /**
-       construct a new BinaryExprTree object for a leaf node, which
-       must contain a number
+    construct a new BinaryExprTree object for a leaf node, which
+    must contain a number
 
-       @param value a number to store in this tree leaf
-    */
+    @param value a number to store in this tree leaf
+     */
     public BinaryExprTree(int value) {
+        this.value = new Integer(value);
 
     }
-    
-    /**
-       construct a new BinaryExprTree object for an internal node,
-       which must contain an operator, and which must have two 
-       children
 
-       @param op the operation at this node
-       @param left the left subtree
-       @param right the right subtree
-    */
+    /**
+    construct a new BinaryExprTree object for an internal node,
+    which must contain an operator, and which must have two 
+    children
+
+    @param op the operation at this node
+    @param left the left subtree
+    @param right the right subtree
+     */
     public BinaryExprTree(String op, BinaryExprTree left, BinaryExprTree right) {
-
+        value = op;
+        this.left = left;
+        this.right = right;
     }
-    
-    /**
-       method to check if this is an operator (internal) node.
 
-       @return true if the value is a valid operator, false otherwise
+    /**
+    method to check if this is an operator (internal) node.
+
+    @return true if the value is a valid operator, false otherwise
      */
     public boolean isOperator() {
 
-	return false;
+        return value instanceof String;
     }
 
     /**
-       method to evaluate an expression stored in a BinaryTree
+    method to evaluate an expression stored in a BinaryTree
 
-       @return an int representing the computed value of this tree
+    @return an int representing the computed value of this tree
      */
     public int evaluate() {
 
-	return 0;
+        if (isOperator()){
+            int leftVal = left.evaluate();
+            int rightVal = right.evaluate();
+            if (value.equals(PLUS)){
+                return leftVal + rightVal;
+            }
+            if(value.equals(MINUS)){
+                return leftVal-rightVal;
+            }
+            if(value.equals(TIMES)){
+                return leftVal*rightVal;
+            }
+            return leftVal/rightVal;
+        }
+        else {
+            return (Integer)value;
+
+        }
     }
 
     /**
-       return a string representation of the expression represented
-       by this tree
+    return a string representation of the expression represented
+    by this tree
 
-       @return a string representation of the expression represented by this tree
-    */
+    @return a string representation of the expression represented by this tree
+     */
     public String toString() {
 
-	return "";
+        if (isOperator()){
+            return "(" + left.toString() + value + right.toString() + ")";
+        }
+        else{
+            return value.toString();
+        }
     }
-    
+
     /** main method to set up an answer */
     public static void main(String[] args) {
 
